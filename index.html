@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple of 5 Checker</title>
+</head>
+<body>
+
+<h2>Check if a Number is a Multiple of 5</h2>
+
+<p>Enter a number:</p>
+<input type="number" id="numInput" />
+<button onclick="checkNumber()">Check</button>
+
+<p id="result"></p>
+
+<script>
+function checkNumber() {
+    var num = document.getElementById("numInput").value;
+    var result;
+
+    if (num % 5 === 0) {
+        result = "Hello";
+    } else {
+        result = "Bye";
+    }
+
+    document.getElementById("result").innerHTML = result;
+}
+</script>
+
+</body>
+</html>
