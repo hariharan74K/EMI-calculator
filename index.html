@@ -2,30 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Multiple of 5 Checker</title>
+    <title>EMI Calculator</title>
+    <style>
+        table, th, td {
+            border: 1px solid rgb(12, 101, 224);
+            border-collapse: collapse;
+            padding: 8px;
+        }
+        table {
+            margin-top: 20px;
+        }
+    </style>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+ 
+     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
+    <div class="jumbotron text-center">
 
-<h2>Check if a Number is a Multiple of 5</h2>
+<h2 style="font-family: Georgia, 'Times New Roman', Times, serif; color: green;">EMI Calculator</h2>
+    </div>
+    <center>
 
-<p>Enter a number:</p>
-<input type="number" id="numInput" />
-<button onclick="checkNumber()">Check</button>
+<h3>Enter Loan Amount :</h3>
+<input type="number" id="loanAmount"  />
 
-<p id="result"></p>
+<h3>Enter Annual Interest Rate :</h3>
+<input type="number" id="interestRate"  />
+
+<h3>Enter Loan Tenure :</h3>
+<input type="number" id="tenureYears"  />
+
+<br><br>
+<button onclick="calculateEMI()">Calculate EMI</button>
+
+<h3>Result:</h3>
+<div id="result"></div>
+    </center>
 
 <script>
-function checkNumber() {
-    var num = document.getElementById("numInput").value;
-    var result;
+function calculateEMI() {
+    // Input values
+    let p = parseFloat(document.getElementById("loanAmount").value); // Principal
+    let R = parseFloat(document.getElementById("interestRate").value); // Annual Interest Rate
+    let years = parseInt(document.getElementById("tenureYears").value); // Tenure in years
 
-    if (num % 5 === 0) {
-        result = "Hello";
-    } else {
-        result = "Bye";
+    // Validation
+    if (isNaN(p) || isNaN(R) || isNaN(years) || p <= 0 || R <= 0 || years <= 0) {
+        document.getElementById("result").innerHTML = "Please enter valid positive numbers for all fields.";
+        return;
     }
 
-    document.getElementById("result").innerHTML = result;
+    let r = R / (12 * 100); // Monthly interest rate
+    let n = years * 12;     // Number of monthly installments
+
+    // EMI Formula
+    let emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+    let totalPayment = emi * n;
+    let totalInterest = totalPayment - p;
+
+    // Result table
+    let resultTable = `
+        <table>
+            <tr>
+                <th>Principal </th>
+                <th>Annual Rate (%)</th>
+                <th>Tenure (Years)</th>
+                <th>Monthly EMI </th>
+                <th>Total Interest </th>
+                <th>Total Payment </th>
+            </tr>
+            <tr>
+                <td>${p.toFixed(2)}</td>
+                <td>${R}</td>
+                <td>${years}</td>
+                <td>${emi.toFixed(2)}</td>
+                <td>${totalInterest.toFixed(2)}</td>
+                <td>${totalPayment.toFixed(2)}</td>
+            </tr>
+        </table>
+    `;
+
+    document.getElementById("result").innerHTML = resultTable;
 }
 </script>
 
